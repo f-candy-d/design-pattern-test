@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="selectable_colors">
+        <item>Red</item>
+        <item>Pink</item>
+        <item>DeepPurple</item>
+        <item>Blue</item>
+        <item>Teal</item>
+        <item>Light Green</item>
+    </string-array>
+
+    <array name="selectable_color_ids">
+        <item>@color/red</item>
+        <item>@color/pink</item>
+        <item>@color/deep_purple</item>
+        <item>@color/blue</item>
+        <item>@color/teal</item>
+        <item>@color/light_green</item>
+    </array>
+</resources>
