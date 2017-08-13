@@ -18,54 +18,62 @@ import java.util.Set;
 public class SharedPrefAndSqlRepository implements Repository {
 
     @NonNull final private Context mContext;
-    @NonNull final private SharedPreferences mPreferences;
+
+    public SharedPrefAndSqlRepository(@NonNull Context context) {
+        mContext = context;
+    }
+
+    private SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
+    }
 
     /**
      * Save to SharedPreferences
      */
-    public SharedPrefAndSqlRepository(@NonNull Context context) {
-        mContext = context;
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-    }
-
     @Override
     public void saveLightValueWithKey(@NonNull String key, int value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(key, value);
         editor.apply();
     }
 
     @Override
     public void saveLightValueWithKey(@NonNull String key, long value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(key, value);
         editor.apply();
     }
 
     @Override
     public void saveLightValueWithKey(@NonNull String key, float value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(key, value);
         editor.apply();
     }
 
     @Override
     public void saveLightValueWithKey(@NonNull String key, String value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
     @Override
     public void saveLightValueWithKey(@NonNull String key, boolean value) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(key, value);
         editor.apply();
     }
 
     @Override
     public void saveLightValuesWithKeys(@NonNull LightEntryPackage entryPackage) {
-        final SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences preferences = getPreferences();
+        final SharedPreferences.Editor editor = preferences.edit();
 
         // boolean
         Set<String> keySet = entryPackage.keySetForBooleanValues();
@@ -129,34 +137,40 @@ public class SharedPrefAndSqlRepository implements Repository {
      */
     @Override
     public int loadIntValueWithKey(@NonNull String key, int def) {
-        return mPreferences.getInt(key, def);
+        SharedPreferences preferences = getPreferences();
+        return preferences.getInt(key, def);
     }
 
     @Override
     public long loadLongValueWithKey(@NonNull String key, long def) {
-        return mPreferences.getLong(key, def);
+        SharedPreferences preferences = getPreferences();
+        return preferences.getLong(key, def);
     }
 
     @Override
     public float loadFloatValueWithKey(@NonNull String key, float def) {
-        return mPreferences.getFloat(key, def);
+        SharedPreferences preferences = getPreferences();
+        return preferences.getFloat(key, def);
     }
 
     @Override
     public String loadStringValueWithKey(@NonNull String key, String def) {
-        return mPreferences.getString(key, def);
+        SharedPreferences preferences = getPreferences();
+        return preferences.getString(key, def);
     }
 
     @Override
     public boolean loadBooleanValueWithKey(@NonNull String key, boolean def) {
-        return mPreferences.getBoolean(key, def);
+        SharedPreferences preferences = getPreferences();
+        return preferences.getBoolean(key, def);
     }
 
     @Override
     public LightEntryPackage loadIntValuesWithKeys(@NonNull Collection<String> keys) {
+        SharedPreferences preferences = getPreferences();
         final LightEntryPackage entryPackage = new LightEntryPackage();
         for (String key : keys) {
-            entryPackage.put(key, mPreferences.getLong(key, entryPackage.getDefaultLong()));
+            entryPackage.put(key, preferences.getLong(key, entryPackage.getDefaultLong()));
         }
 
         return entryPackage;
@@ -164,9 +178,10 @@ public class SharedPrefAndSqlRepository implements Repository {
 
     @Override
     public LightEntryPackage loadLongValueWithKeys(@NonNull Collection<String> keys) {
+        SharedPreferences preferences = getPreferences();
         final LightEntryPackage entryPackage = new LightEntryPackage();
         for (String key : keys) {
-            entryPackage.put(key, mPreferences.getInt(key, entryPackage.getDefaultInt()));
+            entryPackage.put(key, preferences.getInt(key, entryPackage.getDefaultInt()));
         }
 
         return entryPackage;
@@ -174,9 +189,10 @@ public class SharedPrefAndSqlRepository implements Repository {
 
     @Override
     public LightEntryPackage loadFloatValuesWithKeys(@NonNull Collection<String> keys) {
+        SharedPreferences preferences = getPreferences();
         final LightEntryPackage entryPackage = new LightEntryPackage();
         for (String key : keys) {
-            entryPackage.put(key, mPreferences.getFloat(key, entryPackage.getDefaultFloat()));
+            entryPackage.put(key, preferences.getFloat(key, entryPackage.getDefaultFloat()));
         }
 
         return entryPackage;
@@ -184,9 +200,10 @@ public class SharedPrefAndSqlRepository implements Repository {
 
     @Override
     public LightEntryPackage loadStringValuesWithKeys(@NonNull Collection<String> keys) {
+        SharedPreferences preferences = getPreferences();
         final LightEntryPackage entryPackage = new LightEntryPackage();
         for (String key : keys) {
-            entryPackage.put(key, mPreferences.getBoolean(key, entryPackage.getDefaultBoolean()));
+            entryPackage.put(key, preferences.getBoolean(key, entryPackage.getDefaultBoolean()));
         }
 
         return entryPackage;
@@ -194,9 +211,10 @@ public class SharedPrefAndSqlRepository implements Repository {
 
     @Override
     public LightEntryPackage loadBooleanValuesWithKeys(@NonNull Collection<String> keys) {
+        SharedPreferences preferences = getPreferences();
         final LightEntryPackage entryPackage = new LightEntryPackage();
         for (String key : keys) {
-            entryPackage.put(key, mPreferences.getString(key, entryPackage.getDefaultString()));
+            entryPackage.put(key, preferences.getString(key, entryPackage.getDefaultString()));
         }
 
         return entryPackage;
@@ -204,11 +222,12 @@ public class SharedPrefAndSqlRepository implements Repository {
 
     @Override
     public LightEntryPackage loadValuesForExistKeys(@NonNull LightEntryPackage entryPackage) {
+        SharedPreferences preferences = getPreferences();
         // boolean
         Set<String> keySet = entryPackage.keySetForBooleanValues();
         if (keySet != null) {
             for (String key : keySet) {
-                entryPackage.put(key, mPreferences.getBoolean(key, entryPackage.getDefaultBoolean()));
+                entryPackage.put(key, preferences.getBoolean(key, entryPackage.getDefaultBoolean()));
             }
         }
 
@@ -217,7 +236,7 @@ public class SharedPrefAndSqlRepository implements Repository {
         keySet = entryPackage.keySetForLongValues();
         if (keySet != null) {
             for (String key : keySet) {
-                entryPackage.put(key, mPreferences.getLong(key, entryPackage.getDefaultLong()));
+                entryPackage.put(key, preferences.getLong(key, entryPackage.getDefaultLong()));
             }
         }
 
@@ -225,7 +244,7 @@ public class SharedPrefAndSqlRepository implements Repository {
         keySet = entryPackage.keySetForIntValues();
         if (keySet != null) {
             for (String key : keySet) {
-                entryPackage.put(key, mPreferences.getInt(key, entryPackage.getDefaultInt()));
+                entryPackage.put(key, preferences.getInt(key, entryPackage.getDefaultInt()));
             }
         }
 
@@ -233,7 +252,7 @@ public class SharedPrefAndSqlRepository implements Repository {
         keySet = entryPackage.keySetForFloatValues();
         if (keySet != null) {
             for (String key : keySet) {
-                entryPackage.put(key, mPreferences.getFloat(key, entryPackage.getDefaultFloat()));
+                entryPackage.put(key, preferences.getFloat(key, entryPackage.getDefaultFloat()));
             }
         }
 
@@ -241,7 +260,7 @@ public class SharedPrefAndSqlRepository implements Repository {
         keySet = entryPackage.keySetForStringValues();
         if (keySet != null) {
             for (String key : keySet) {
-                entryPackage.put(key, mPreferences.getString(key, entryPackage.getDefaultString()));
+                entryPackage.put(key, preferences.getString(key, entryPackage.getDefaultString()));
             }
         }
 
